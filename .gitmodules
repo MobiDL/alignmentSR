@@ -1,6 +1,6 @@
-[submodule "tasks"]
-	path = tasks
-	url = https://github.com/MobiDL/tasks
 [submodule "backends.conf"]
 	path = backends.conf
 	url = https://github.com/MobiDL/backends.conf
+[submodule "modules"]
+	path = modules
+	url = https://github.com/MobiDL/modules
