@@ -42,16 +42,23 @@ Edit the `inputs.json` file to specify your input files and parameters:
 
 ```json
 {
-  "alignmentSR.reads": ["path/to/sample_R1.fastq.gz", "path/to/sample_R2.fastq.gz"],
-  "alignmentSR.reference": "path/to/reference.fa",
-  "alignmentSR.target_regions": "path/to/targets.bed"
+	"alignmentSR.sample": "SampleName",
+	"alignmentSR.fasta": "/path/to/my/genomes/GRCh38/GRCh38.fa",
+	"alignmentSR.fastq_R1": "/path/to/my/fastq_R1.fastq.gz",
+	"alignmentSR.fastq_R2": "/path/to/my/fastq_R2.fastq.gz",
+	"alignmentSR.knownSites": [
+		"/path/to/my/knownsites_1.vcf.gz",
+		"/path/to/my/knownsites_2.vcf.gz"
+	],
+	"alignmentSR.bed": "/path/to/my/intervals.bed",
+	"alignmentSR.outputPath": "/path/to/my/output"
 }
 ```
 
 ### 3. Run the Workflow
 
 ```bash
-cromwell run alignmentSR.wdl -i inputs.json
+java cromwell run alignmentSR.wdl -Dconfig.file=backends.conf/slurm_apptainer.conf -i inputs.json
 ```
 
 ---
@@ -60,7 +67,8 @@ cromwell run alignmentSR.wdl -i inputs.json
 
 ```
 alignmentSR/
-├── tasks/                   # Tasks sub-repository
+├── backends.conf/           # Backends sub-repository
+├── modules/                 # Modules sub-repository
 ├── alignmentSR.wdl          # Main workflow file
 ├── inputs.json              # Example input configuration
 └── README.md                # This file
@@ -70,7 +78,7 @@ alignmentSR/
 
 ## ⚙️ Workflow Steps
 
-<img width="820" height="1540" alt="alignment (1)" src="https://github.com/user-attachments/assets/9f723e17-9d2c-4171-a67f-7e1b1239bc1e" />
+<img height="840" alt="alignment" src="https://github.com/user-attachments/assets/bab19cc9-1557-44f8-9441-07cf540195e4" />
 
 
 ---
@@ -91,4 +99,4 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## 🆘 Support
 
-For questions or issues, please contact the Mobidic team or open an issue in this repository.
+For any questions or issues, please open an issue in this repository or contact us.
