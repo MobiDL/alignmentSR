@@ -1,0 +1,11 @@
+{
+	"alignmentSR.sample": "test",
+	"alignmentSR.fasta": "fasta/chr.fa",
+	"alignmentSR.fastq_R1": "fastq/fq1.fq.gz",
+	"alignmentSR.fastq_R2": "fastq/fq2.fq.gz",
+	"alignmentSR.knownSites": [
+		"knownsites/knownsites1.vcf.gz"
+	],
+	"alignmentSR.bed": "bed/test.bed",
+	"alignmentSR.outputPath": "output"
+}
