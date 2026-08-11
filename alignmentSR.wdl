@@ -11,8 +11,8 @@ workflow alignmentSR {
 	meta {
 		author: "Charles VAN GOETHEM"
 		email: "c-vangoethem(at)chu-montpellier.fr"
-		version: "0.0.1"
-		date: "2026-08-10"
+		version: "0.0.1-beta"
+		date: "2026-08-11"
 	}
 
 	input {
@@ -141,9 +141,18 @@ workflow alignmentSR {
 	 		refFasta = Fasta.fasta
 	}
 
+	call sambamba.sort as sort_final {
+		input:
+			threads = 12,
+			outputPath = "~{outputPath}",
+			bam = leftAlignIndels.outputBam
+	}
+
 	output {
-		File bam = leftAlignIndels.outputBam
-		File bai = leftAlignIndels.outputBai
+		File fastpJson = fastp.fastpJson
+		File fastpHtml = fastp.fastpHtml
+		File bam = sort_final.outputBam
+		File bai = sort_final.outputBai
 	}
     
     parameter_meta {
