@@ -34,20 +34,10 @@ workflow alignmentSR {
 	Object Fasta = {
         "fasta" : fasta,
 		"fasta_index": fasta + ".fai",
-		"fasta_gz": fasta + ".gz",
-		"fasta_index_gz": fasta + "gz.fai",
-		"fasta_gzindex": fasta + "gz.gzi",
 		"fasta_dict": sub(fasta, "(.*).(fa|fasta)", "$1.dict"),
-		"fasta_amb": fasta + ".amb",
-		"fasta_ann": fasta + ".ann",
-		"fasta_bwt": fasta + ".bwt",
-		"fasta_pac": fasta + ".pac",
-		"fasta_sa": fasta + ".sa",
 		"fasta_l2b": fasta + ".l2b",
 		"fasta_mbw": fasta + ".mbw"
     }
-
-
 
 	call fastp.fastp {
 		input:
@@ -65,8 +55,7 @@ workflow alignmentSR {
 			outputPath = "~{outputPath}",
 			fastqR1 = fastp.FastpR1,
 			fastqR2 = fastp.FastpR2,
-			fasta = Fasta.fasta,
-            fasta_l2b = Fasta.fasta_l2b
+			fasta = Fasta.fasta
 	}
 
 	call samtools.sort {
