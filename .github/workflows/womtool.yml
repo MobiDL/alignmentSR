@@ -1,0 +1,24 @@
+name: womtools-validate
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install womtool
+        run: |
+          wget https://github.com/broadinstitute/cromwell/releases/download/90/womtool-90.jar
+          chmod +x womtool-90.jar
+
+      - name: Check Syntax
+        run: java -jar womtool-90.jar -i tests/test.json alignmentSR.wdl
