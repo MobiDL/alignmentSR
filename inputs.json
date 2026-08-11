@@ -1,12 +1,12 @@
 {
 	"alignmentSR.sample": "SampleName",
-	"alignmentSR.fasta": "/path/to/my/genomes/GRCh38/GRCh38.fa",
-	"alignmentSR.fastq_R1": "/path/to/my/fastq_R1.fastq.gz",
-	"alignmentSR.fastq_R2": "/path/to/my/fastq_R2.fastq.gz",
+	"alignmentSR.fasta": "/path/to/genome.fa",
+	"alignmentSR.fastq_R1": "/path/to/fastq_R1.fastq.gz",
+	"alignmentSR.fastq_R2": "/path/to/fastq_R2.fastq.gz",
 	"alignmentSR.knownSites": [
-		"/path/to/my/knownsites_1.vcf.gz",
-		"/path/to/my/knownsites_2.vcf.gz"
+		"/path/to/knownsites_1.vcf.gz",
+		"/path/to/knownsites_2.vcf.gz"
 	],
-	"alignmentSR.bed": "/path/to/my/intervals.bed",
-	"alignmentSR.outputPath": "/path/to/my/output"
+	"alignmentSR.bed": "/path/to/intervals.bed",
+	"alignmentSR.outputPath": "/path/to/output"
 }
