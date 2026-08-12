@@ -12,7 +12,7 @@ workflow alignmentSR {
 		author: "Charles VAN GOETHEM"
 		email: "c-vangoethem(at)chu-montpellier.fr"
 		version: "0.0.1-beta"
-		date: "2026-08-11"
+		date: "2026-08-12"
 	}
 
 	input {
@@ -28,7 +28,7 @@ workflow alignmentSR {
 
 		File bed
 
-		String? outputPath
+		String outputPath
 	}
 
 	Object Fasta = {
@@ -43,7 +43,8 @@ workflow alignmentSR {
 		input:
 			sample = sample,
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "0-fastp/",
 			fastqR1 = fastq_R1,
 			fastqR2 = fastq_R2,
 	}
@@ -52,7 +53,8 @@ workflow alignmentSR {
 		input:
 			sample = sample,
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "1-minibwa/",
 			fastqR1 = fastp.FastpR1,
 			fastqR2 = fastp.FastpR2,
 			fasta = Fasta.fasta
@@ -61,7 +63,8 @@ workflow alignmentSR {
 	call samtools.sort {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "2-sort/",
 			bam = map.sam
 	}
 	
@@ -75,14 +78,16 @@ workflow alignmentSR {
 	call sambamba.markdup {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "3-markdup/",
 			bam = sort.outputFile
 	}
 
 	call GATK4.splitIntervals {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "0-split/",
 			bed = bed,
 	 		refFasta = Fasta.fasta,
 	 		scatterCount = 12
@@ -98,10 +103,12 @@ workflow alignmentSR {
 		call GATK4.baseRecalibrator {
 			input:
 				threads = 12,
-				outputPath = "~{outputPath}",
+				outputPath = "~{outputPath}/",
+            subdir = "4-baserecalibrator/",
 				bam =  markdup.outputBam,
     			bed = interval,
-    			knownSites = zip(knownSites,suffixArray.array_suffix),
+    			knownSites = knownSites,
+    			knownSitesIdx = suffixArray.array_suffix,
 				refFasta = Fasta.fasta
 		}
 	}
@@ -109,14 +116,16 @@ workflow alignmentSR {
 	call GATK4.gatherBQSRReports {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "4-baserecalibrator/",
 			reports = baseRecalibrator.outputFile
 	}
 
 	call GATK4.applyBQSR {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "4-baserecalibrator/",
 			bam =  markdup.outputBam,
 	 		refFasta = Fasta.fasta,
 			bqsrReport = gatherBQSRReports.report
@@ -125,7 +134,8 @@ workflow alignmentSR {
 	call GATK4.leftAlignIndels {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "5-leftAlign/",
 			bam = applyBQSR.outputBam,
 	 		refFasta = Fasta.fasta
 	}
@@ -133,7 +143,8 @@ workflow alignmentSR {
 	call sambamba.sort as sort_final {
 		input:
 			threads = 12,
-			outputPath = "~{outputPath}",
+			outputPath = "~{outputPath}/",
+            subdir = "6-final-sort/",
 			bam = leftAlignIndels.outputBam
 	}
 
