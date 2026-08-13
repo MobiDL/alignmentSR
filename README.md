@@ -19,6 +19,11 @@ It is designed to be modular, reproducible, and optimized for use in clinical se
 - [Cromwell](https://cromwell.readthedocs.io/) (Workflow Execution Engine)
 - [Apptainer](https://apptainer.org/) (for containerized tools)
 
+### Apptainer images
+
+This workflow is designed to be used on HPC cluster with apptainer images.
+You could install images from this repo : https://github.com/MobiDL/apptainer-recipes
+
 ### Inputs
 
 - **FastQ files** (paired-end)
@@ -29,14 +34,40 @@ It is designed to be modular, reproducible, and optimized for use in clinical se
 
 ## 🚀 Quick Start
 
+⚠️ For maximum compatibility across Cromwell and cluster backends, all input and output paths must be absolute paths.
+
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/MobiDL/alignmentSR.git
+git clone --recursive https://github.com/MobiDL/alignmentSR.git
 cd alignmentSR
 ```
+### 2. Backend Configuration
 
-### 2. Configure Inputs
+Before running the workflow, adapt the backend configuration to match your HPC environment.
+
+Common parameters to review include:
+- `queue`
+- `tmp_dir`
+- `root_dir`
+- `temporary-directory`
+- `root`
+
+These parameters are usually cluster-specific and may need to be adjusted depending on your scheduler and storage architecture.
+
+### 3. Run the Test Dataset
+
+A minimal test dataset is available in the `tests` directory.
+
+Update the paths in `tests/test.json`, then run:
+
+```bash
+java cromwell run alignmentSR.wdl \
+  -Dconfig.file=backends.conf/slurm_apptainer.conf \
+  -i tests/test.json
+```
+
+### 3. Configure Inputs
 
 Edit the `inputs.json` file to specify your input files and parameters:
 
@@ -55,7 +86,7 @@ Edit the `inputs.json` file to specify your input files and parameters:
 }
 ```
 
-### 3. Run the Workflow
+### 4. Run the Workflow
 
 ```bash
 java cromwell run alignmentSR.wdl -Dconfig.file=backends.conf/slurm_apptainer.conf -i inputs.json
@@ -69,6 +100,7 @@ java cromwell run alignmentSR.wdl -Dconfig.file=backends.conf/slurm_apptainer.co
 alignmentSR/
 ├── backends.conf/           # Backends sub-repository
 ├── modules/                 # Modules sub-repository
+├── tests/                   # tests directory containing minimal dataset
 ├── alignmentSR.wdl          # Main workflow file
 ├── inputs.json              # Example input configuration
 └── README.md                # This file
