@@ -11,8 +11,8 @@ workflow alignmentSR {
 	meta {
 		author: "Charles VAN GOETHEM"
 		email: "c-vangoethem(at)chu-montpellier.fr"
-		version: "0.0.1-beta"
-		date: "2026-08-12"
+		version: "0.1.0"
+		date: "2026-08-13"
 	}
 
 	input {
